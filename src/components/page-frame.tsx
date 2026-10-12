@@ -43,33 +43,40 @@ export function IconTile({
 
 export function PageIntro({
   crumbs,
+  eyebrow,
   title,
   lead,
-  icon,
-  label,
 }: {
   crumbs: { href?: string; label: string }[];
+  eyebrow?: string;
   title: string;
   lead: string;
-  icon: LucideIcon;
-  label: string;
 }) {
   return (
     <header className="border-b border-line bg-surface">
-      <div className="shell grid items-end gap-8 py-10 sm:py-14 lg:grid-cols-[minmax(0,1.2fr)_minmax(14rem,18rem)] lg:gap-12">
-        <div className="min-w-0">
-          <Crumb items={crumbs} />
-          <h1 className="prose-title mt-4 max-w-3xl font-semibold text-navy">{title}</h1>
-          <p className="mt-4 max-w-2xl text-base text-muted sm:text-lg">{lead}</p>
+      <div className="shell py-10 sm:py-14">
+        <div className="max-w-4xl">
+        <Crumb items={crumbs} />
+        {eyebrow ? <p className="mt-6 text-xs font-semibold tracking-wide text-teal uppercase">{eyebrow}</p> : null}
+        <h1 className="prose-title mt-3 max-w-3xl font-semibold text-navy">{title}</h1>
+        <p className="mt-4 max-w-2xl text-base text-muted sm:text-lg">{lead}</p>
         </div>
-        <figure className="relative flex min-h-52 flex-col justify-between overflow-hidden rounded-md bg-navy p-6 text-white">
-          <span aria-hidden="true" className="pointer-events-none absolute -top-8 -right-8 h-36 w-36 rounded-full border border-white/15" />
-          <span aria-hidden="true" className="pointer-events-none absolute -bottom-10 -left-8 h-28 w-28 rounded-full bg-teal" />
-          <IconTile icon={icon} tone="dark" size="lg" />
-          <figcaption className="relative mt-10 text-lg font-semibold">{label}</figcaption>
-        </figure>
       </div>
     </header>
+  );
+}
+
+export function PageFallback() {
+  return (
+    <div className="border-b border-line bg-surface" aria-busy="true">
+      <div className="shell py-10 sm:py-14">
+        <div className="max-w-4xl">
+        <p className="text-sm text-muted">Loading</p>
+        <div className="mt-4 h-10 max-w-xl rounded-md bg-line" />
+        <div className="mt-4 h-16 max-w-2xl rounded-md bg-line" />
+        </div>
+      </div>
+    </div>
   );
 }
 

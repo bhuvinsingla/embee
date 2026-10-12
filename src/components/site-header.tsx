@@ -3,10 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useId, useState, type ReactNode } from "react";
-import { services, verticals } from "@/lib/marketing";
+import { projects, services } from "@/lib/marketing";
 
 export function SiteHeader() {
-  const [open, setOpen] = useState<"verticals" | "services" | "mobile" | null>(null);
+  const [open, setOpen] = useState<"work" | "services" | "mobile" | null>(null);
   const menuId = useId();
 
   useEffect(() => {
@@ -55,15 +55,18 @@ export function SiteHeader() {
             About Us
           </Link>
           <Menu
-            label="Verticals"
-            expanded={open === "verticals"}
-            onToggle={() => setOpen(open === "verticals" ? null : "verticals")}
-            id={`${menuId}-verticals`}
+            label="Our Work"
+            expanded={open === "work"}
+            onToggle={() => setOpen(open === "work" ? null : "work")}
+            id={`${menuId}-work`}
           >
-            {verticals.map((item) => (
+            <Link href="/work" className="block rounded-md px-3 py-2 text-sm font-semibold hover:bg-paper" onClick={() => setOpen(null)}>
+              All work
+            </Link>
+            {projects.map((item) => (
               <Link
                 key={item.slug}
-                href={`/verticals#${item.slug}`}
+                href={`/work/${item.slug}`}
                 className="block rounded-md px-3 py-2 text-sm hover:bg-paper"
                 onClick={() => setOpen(null)}
               >
@@ -77,6 +80,9 @@ export function SiteHeader() {
             onToggle={() => setOpen(open === "services" ? null : "services")}
             id={`${menuId}-services`}
           >
+            <Link href="/services" className="block rounded-md px-3 py-2 text-sm font-semibold hover:bg-paper" onClick={() => setOpen(null)}>
+              All services
+            </Link>
             {services.map((item) => (
               <Link
                 key={item.slug}
@@ -116,13 +122,19 @@ export function SiteHeader() {
             <Link href="/about" className="block py-2.5 text-sm font-medium" onClick={() => setOpen(null)}>
               About Us
             </Link>
-            <p className="mt-3 text-xs font-semibold tracking-wide text-muted uppercase">Verticals</p>
-            {verticals.map((item) => (
-              <Link key={item.slug} href={`/verticals#${item.slug}`} className="block py-2.5 text-sm" onClick={() => setOpen(null)}>
+            <h2 className="mt-4 text-xs font-semibold tracking-wide text-muted uppercase">Our Work</h2>
+            <Link href="/work" className="block py-2.5 text-sm font-semibold" onClick={() => setOpen(null)}>
+              All work
+            </Link>
+            {projects.map((item) => (
+              <Link key={item.slug} href={`/work/${item.slug}`} className="block py-2.5 text-sm" onClick={() => setOpen(null)}>
                 {item.title}
               </Link>
             ))}
-            <p className="mt-3 text-xs font-semibold tracking-wide text-muted uppercase">Services</p>
+            <h2 className="mt-4 text-xs font-semibold tracking-wide text-muted uppercase">Services</h2>
+            <Link href="/services" className="block py-2.5 text-sm font-semibold" onClick={() => setOpen(null)}>
+              All services
+            </Link>
             {services.map((item) => (
               <Link key={item.slug} href={item.href} className="block py-2.5 text-sm" onClick={() => setOpen(null)}>
                 {item.title}

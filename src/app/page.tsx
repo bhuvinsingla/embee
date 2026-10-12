@@ -31,7 +31,7 @@ export default function HomePage() {
       </section>
 
       <section className="shell py-12 sm:py-16">
-        <h2 className="section-title max-w-3xl font-semibold text-navy">Technology That Understands Your Business.</h2>
+        <h2 className="section-title max-w-3xl font-semibold text-navy">About Embee Finsoft</h2>
         <p className="mt-4 max-w-2xl text-muted">
           Embee Finsoft is the technology business associated with Embee Group. The company page covers how the work is delivered.
         </p>
@@ -42,7 +42,7 @@ export default function HomePage() {
 
       <section className="bg-surface py-12 sm:py-16">
         <div className="shell min-w-0">
-          <h2 className="section-title font-semibold text-navy">Technology Solutions for a Smarter Enterprise.</h2>
+          <h2 className="section-title font-semibold text-navy">Services</h2>
           <div className="mt-8 grid gap-4 lg:grid-cols-2">
             {featured.map((item) => (
               <article key={item.slug} className="rounded-md border border-navy/15 bg-paper p-6">
@@ -67,7 +67,7 @@ export default function HomePage() {
       </section>
 
       <section className="shell py-12 sm:py-16">
-        <h2 className="section-title font-semibold text-navy">Completed Projects.</h2>
+        <h2 className="section-title font-semibold text-navy">Our Work</h2>
         <ul className="mt-8 grid gap-4 sm:grid-cols-2">
           {projects.map((item) => (
             <li key={item.slug}>
@@ -85,7 +85,7 @@ export default function HomePage() {
       <section className="bg-navy">
         <div className="shell flex flex-col gap-6 py-12 sm:py-16 lg:flex-row lg:items-end lg:justify-between">
           <div className="min-w-0">
-            <h2 className="section-title font-semibold text-white">Have a Business Challenge in Mind?</h2>
+            <h2 className="section-title font-semibold text-white">Contact Us</h2>
             <p className="mt-3 max-w-xl text-sm text-white/75">
               Tell us what you need to change in the operation.
             </p>

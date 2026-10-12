@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LayoutGrid } from "lucide-react";
 import { PageIntro } from "@/components/page-frame";
 import { ServiceIcon } from "@/components/service-icon";
 import { services } from "@/lib/marketing";
@@ -17,8 +16,6 @@ export default function ServicesPage() {
         crumbs={[{ href: "/", label: "Home" }, { label: "Services" }]}
         title="Services"
         lead="Microsoft solutions and AI agents lead the practice. The other services cover the software, automation, data, and integration work around them."
-        icon={LayoutGrid}
-        label="Six practice areas"
       />
       <div className="shell py-12 sm:py-16">
         <ul className="grid gap-4 lg:grid-cols-2">

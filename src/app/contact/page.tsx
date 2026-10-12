@@ -29,10 +29,8 @@ export default function ContactPage() {
     <>
       <PageIntro
         crumbs={[{ href: "/", label: "Home" }, { label: "Contact Us" }]}
-        title="Let's Build Something Meaningful."
-        lead="Tell us about your business requirements, and the team will help identify a suitable technology approach."
-        icon={Mail}
-        label="Chandigarh office"
+        title="Contact Us"
+        lead="Tell us about your business requirements. Enquiries go to the Chandigarh office."
       />
       <div className="shell grid items-start gap-8 py-12 sm:py-16 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-10">
         <div className="grid gap-3">

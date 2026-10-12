@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { PageIntro, PointList } from "@/components/page-frame";
-import { serviceIcon } from "@/components/service-icon";
+import { PageFallback, PageIntro, PointList } from "@/components/page-frame";
 import { getService, services } from "@/lib/marketing";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -18,7 +18,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: service.title, description: service.short };
 }
 
-export default async function ServicePage({ params }: Props) {
+export default function ServicePage({ params }: Props) {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <ServiceContent params={params} />
+    </Suspense>
+  );
+}
+
+async function ServiceContent({ params }: Props) {
   const { slug } = await params;
   const service = getService(slug);
   if (!service) notFound();
@@ -29,8 +37,6 @@ export default async function ServicePage({ params }: Props) {
         crumbs={[{ href: "/", label: "Home" }, { href: "/services", label: "Services" }, { label: service.title }]}
         title={service.title}
         lead={service.short}
-        icon={serviceIcon(service.slug)}
-        label="Service"
       />
       <div className="shell grid items-start gap-8 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-10">
         <div className="min-w-0">

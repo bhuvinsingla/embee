@@ -22,9 +22,7 @@ export default function WorkPage() {
       <PageIntro
         crumbs={[{ href: "/", label: "Home" }, { label: "Our Work" }]}
         title="Our Work"
-        lead="Four completed deliveries: CM Welding Sprint 2, Sunbridge Sprint 2, the Hour Tracker, and the SOW Tracker. Access credentials and commercial figures stay off these pages."
-        icon={ClipboardList}
-        label="Completed deliveries"
+        lead="CM Welding, Sunbridge, the Hour Tracker, and the SOW Tracker. Access credentials and commercial figures stay off these pages."
       />
       <div className="shell py-12 sm:py-16">
         <ul className="grid gap-4 sm:grid-cols-2">

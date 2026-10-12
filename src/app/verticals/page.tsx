@@ -22,9 +22,7 @@ export default function VerticalsPage() {
       <PageIntro
         crumbs={[{ href: "/", label: "Home" }, { label: "Verticals" }]}
         title="Verticals"
-        lead="These are the deliveries that are finished. Nothing else is listed here."
-        icon={Factory}
-        label="Completed work"
+        lead="CM Welding, Sunbridge, Hour Tracker, and SOW Tracker."
       />
       <div className="shell grid gap-4 py-12 sm:gap-6 sm:py-16 sm:grid-cols-2">
         {verticals.map((item) => (

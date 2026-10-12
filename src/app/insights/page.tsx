@@ -17,8 +17,6 @@ export default function InsightsPage() {
         crumbs={[{ href: "/", label: "Home" }, { label: "Insights" }]}
         title="Insights"
         lead="These topics are in preparation. There are no articles, authors, or publication dates on this page yet."
-        icon={BookOpen}
-        label="Topics in preparation"
       />
       <div className="shell py-12 sm:py-16">
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

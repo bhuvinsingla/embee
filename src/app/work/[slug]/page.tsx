@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { Activity, ClipboardList, Clock, Factory, ImageOff, type LucideIcon } from "lucide-react";
-import { IconTile, PageIntro, PointList } from "@/components/page-frame";
+import { ImageOff } from "lucide-react";
+import { IconTile, PageFallback, PageIntro, PointList } from "@/components/page-frame";
 import { getProject, projects } from "@/lib/marketing";
 
 type Props = { params: Promise<{ slug: string }> };
-
-const projectIcons: Record<string, LucideIcon> = {
-  "cm-welding": Factory,
-  sunbridge: Activity,
-  "hour-tracker": Clock,
-  "sow-tracker": ClipboardList,
-};
 
 export function generateStaticParams() {
   return projects.map((item) => ({ slug: item.slug }));
@@ -25,20 +19,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: project.title, description: project.solution };
 }
 
-export default async function ProjectPage({ params }: Props) {
+export default function ProjectPage({ params }: Props) {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <ProjectContent params={params} />
+    </Suspense>
+  );
+}
+
+async function ProjectContent({ params }: Props) {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
-  const icon = projectIcons[project.slug] ?? Factory;
 
   return (
     <>
       <PageIntro
         crumbs={[{ href: "/", label: "Home" }, { href: "/work", label: "Our Work" }, { label: project.title }]}
+        eyebrow={project.category}
         title={project.title}
         lead={project.challenge}
-        icon={icon}
-        label={project.category}
       />
       <div className="shell grid items-start gap-8 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-10">
         <div className="min-w-0">

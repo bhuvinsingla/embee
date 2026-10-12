@@ -37,8 +37,6 @@ export default function AboutPage() {
         crumbs={[{ href: "/", label: "Home" }, { label: "About Us" }]}
         title="About Embee Finsoft"
         lead="Practical technology for organisations that need clearer workflows, connected systems, and software that matches how the business actually runs."
-        icon={Building2}
-        label="Technology with Embee Group"
       />
       <div className="shell py-12 sm:py-16">
         <ul className="grid gap-4 lg:grid-cols-3">
