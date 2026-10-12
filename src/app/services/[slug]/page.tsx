@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PageIntro, PointList } from "@/components/page-frame";
+import { serviceIcon } from "@/components/service-icon";
 import { getService, services } from "@/lib/marketing";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -22,41 +24,45 @@ export default async function ServicePage({ params }: Props) {
   if (!service) notFound();
 
   return (
-    <article className="shell shell-narrow py-12 sm:py-16">
-      <p className="text-sm text-muted">
-        <Link href="/services" className="hover:text-teal">Services</Link> / {service.title}
-      </p>
-      <h1 className="prose-title mt-4 font-semibold text-navy">{service.title}</h1>
-      <p className="mt-4 text-lg text-muted">{service.short}</p>
-
-      <h2 className="mt-10 text-xl font-semibold text-navy">Business challenges</h2>
-      <ul className="mt-3 grid gap-2 text-sm text-muted">
-        {service.challenges.map((item) => <li key={item}>{item}</li>)}
-      </ul>
-
-      <h2 className="mt-10 text-xl font-semibold text-navy">Capabilities</h2>
-      <ul className="mt-3 grid gap-2 text-sm text-muted">
-        {service.capabilities.map((item) => <li key={item}>{item}</li>)}
-      </ul>
-
-      <h2 className="mt-10 text-xl font-semibold text-navy">Common use cases</h2>
-      <ul className="mt-3 grid gap-2 text-sm text-muted">
-        {service.useCases.map((item) => <li key={item}>{item}</li>)}
-      </ul>
-
-      <h2 className="mt-10 text-xl font-semibold text-navy">Implementation approach</h2>
-      <p className="mt-3 text-sm text-muted">{service.approach}</p>
-
-      <h2 className="mt-10 text-xl font-semibold text-navy">Technologies</h2>
-      <ul className="mt-3 flex flex-wrap gap-2">
-        {service.technologies.map((item) => (
-          <li key={item} className="rounded-md bg-paper px-2.5 py-1 text-sm">{item}</li>
-        ))}
-      </ul>
-
-      <Link href="/contact" className="mt-10 inline-flex rounded-md bg-teal px-5 py-3 text-sm font-semibold text-white hover:bg-[#6b0f0f]">
-        Discuss this service
-      </Link>
-    </article>
+    <>
+      <PageIntro
+        crumbs={[{ href: "/", label: "Home" }, { href: "/services", label: "Services" }, { label: service.title }]}
+        title={service.title}
+        lead={service.short}
+        icon={serviceIcon(service.slug)}
+        label="Service"
+      />
+      <div className="shell grid items-start gap-8 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-10">
+        <div className="min-w-0">
+          <section>
+            <h2 className="text-xl font-semibold text-navy sm:text-2xl">Business challenges</h2>
+            <PointList items={service.challenges} />
+          </section>
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-navy sm:text-2xl">Capabilities</h2>
+            <PointList items={service.capabilities} />
+          </section>
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-navy sm:text-2xl">Common use cases</h2>
+            <PointList items={service.useCases} />
+          </section>
+          <section className="mt-10 rounded-md border border-line bg-surface p-5 sm:p-6">
+            <h2 className="text-xl font-semibold text-navy">Implementation approach</h2>
+            <p className="mt-3 text-sm text-muted">{service.approach}</p>
+          </section>
+        </div>
+        <aside className="rounded-md border border-line bg-surface p-5 lg:sticky lg:top-24">
+          <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">Technologies</h2>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {service.technologies.map((item) => (
+              <li key={item} className="rounded-md border border-line bg-paper px-2.5 py-1 text-sm text-navy">{item}</li>
+            ))}
+          </ul>
+          <Link href="/contact" className="mt-6 inline-flex min-h-11 w-full items-center justify-center rounded-md bg-teal px-5 py-3 text-sm font-semibold text-white hover:bg-[#6b0f0f]">
+            Discuss this service
+          </Link>
+        </aside>
+      </div>
+    </>
   );
 }

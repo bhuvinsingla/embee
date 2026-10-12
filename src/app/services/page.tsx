@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { LayoutGrid } from "lucide-react";
+import { PageIntro } from "@/components/page-frame";
 import { ServiceIcon } from "@/components/service-icon";
 import { services } from "@/lib/marketing";
 
@@ -10,24 +12,32 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <article className="shell py-12 sm:py-16">
-      <p className="text-sm text-muted">Home / Services</p>
-      <h1 className="prose-title mt-4 max-w-3xl font-semibold text-navy">Services</h1>
-      <p className="mt-4 max-w-2xl text-muted">
-        Microsoft solutions and AI agents lead the practice. The other services cover the software, automation, data, and integration work around them.
-      </p>
-      <ul className="mt-10 grid gap-4 lg:grid-cols-2">
-        {services.map((item) => (
-          <li key={item.slug} className={item.featured ? "lg:col-span-2" : undefined}>
-            <Link href={item.href} className="block h-full rounded-md border border-line bg-surface p-5 hover:border-navy sm:p-6">
-              <ServiceIcon slug={item.slug} />
-              <h2 className="mt-3 text-2xl font-semibold text-navy">{item.title}</h2>
-              <p className="mt-2 max-w-3xl text-sm text-muted">{item.short}</p>
-              <span className="mt-4 inline-flex text-sm font-semibold text-teal">{item.cta}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </article>
+    <>
+      <PageIntro
+        crumbs={[{ href: "/", label: "Home" }, { label: "Services" }]}
+        title="Services"
+        lead="Microsoft solutions and AI agents lead the practice. The other services cover the software, automation, data, and integration work around them."
+        icon={LayoutGrid}
+        label="Six practice areas"
+      />
+      <div className="shell py-12 sm:py-16">
+        <ul className="grid gap-4 lg:grid-cols-2">
+          {services.map((item, index) => (
+            <li key={item.slug} className={item.featured ? "lg:col-span-2" : undefined}>
+              <Link
+                href={item.href}
+                className="listing-card flex h-full flex-col rounded-md border border-line bg-surface p-5 sm:p-6"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <ServiceIcon slug={item.slug} />
+                <h2 className="mt-4 text-xl font-semibold text-navy sm:text-2xl">{item.title}</h2>
+                <p className="mt-2 max-w-3xl text-sm text-muted">{item.short}</p>
+                <span className="mt-5 text-sm font-semibold text-teal">{item.cta}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }

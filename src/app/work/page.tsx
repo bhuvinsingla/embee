@@ -1,32 +1,52 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Activity, ClipboardList, Clock, Factory, type LucideIcon } from "lucide-react";
+import { IconTile, PageIntro } from "@/components/page-frame";
 import { projects } from "@/lib/marketing";
 
 export const metadata: Metadata = {
   title: "Our Work",
-  description: "Capability demonstrations and proposed solutions from Embee Finsoft. Client names are shown only when disclosure is approved.",
+  description: "Completed Embee Finsoft delivery: CM Welding, Sunbridge, Hour Tracker, and SOW Tracker.",
+};
+
+const projectIcons: Record<string, LucideIcon> = {
+  "cm-welding": Factory,
+  sunbridge: Activity,
+  "hour-tracker": Clock,
+  "sow-tracker": ClipboardList,
 };
 
 export default function WorkPage() {
   return (
-    <article className="shell py-12 sm:py-16">
-      <p className="text-sm text-muted">Home / Our Work</p>
-      <h1 className="prose-title mt-4 font-semibold text-navy">Our Work</h1>
-      <p className="mt-4 max-w-2xl text-muted">
-        Each item is labelled as a demonstration, a proposed solution, or an internal concept. Client names and commercial details stay off this site until they are approved.
-      </p>
-      <ul className="mt-10 grid gap-4 sm:grid-cols-2">
-        {projects.map((item) => (
-          <li key={item.slug}>
-            <Link href={`/work/${item.slug}`} className="block h-full rounded-md border border-line bg-surface p-6 hover:border-navy">
-              <p className="text-xs font-semibold tracking-wide text-teal uppercase">{item.category}</p>
-              <h2 className="mt-2 text-2xl font-semibold text-navy">{item.title}</h2>
-              <p className="mt-3 text-sm text-muted">{item.challenge}</p>
-              <p className="mt-4 text-xs font-medium text-gold">{item.status}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </article>
+    <>
+      <PageIntro
+        crumbs={[{ href: "/", label: "Home" }, { label: "Our Work" }]}
+        title="Our Work"
+        lead="Four completed deliveries: CM Welding Sprint 2, Sunbridge Sprint 2, the Hour Tracker, and the SOW Tracker. Access credentials and commercial figures stay off these pages."
+        icon={ClipboardList}
+        label="Completed deliveries"
+      />
+      <div className="shell py-12 sm:py-16">
+        <ul className="grid gap-4 sm:grid-cols-2">
+          {projects.map((item, index) => (
+            <li key={item.slug}>
+              <Link
+                href={`/work/${item.slug}`}
+                className="listing-card flex h-full flex-col rounded-md border border-line bg-surface p-5 sm:p-6"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <IconTile icon={projectIcons[item.slug] ?? Factory} />
+                  <p className="text-xs font-semibold tracking-wide text-teal uppercase">{item.status}</p>
+                </div>
+                <p className="mt-4 text-xs font-semibold tracking-wide text-muted uppercase">{item.category}</p>
+                <h2 className="mt-1 text-2xl font-semibold text-navy">{item.title}</h2>
+                <p className="mt-3 text-sm text-muted">{item.challenge}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }

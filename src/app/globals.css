@@ -84,16 +84,6 @@ video {
   outline-offset: 3px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  .rise {
-    animation: none;
-  }
-}
-
 @keyframes rise {
   from {
     opacity: 0;
@@ -105,6 +95,33 @@ video {
   }
 }
 
-.rise {
+.rise,
+.listing-card {
   animation: rise 0.55s ease both;
+}
+
+.listing-card {
+  transition:
+    border-color 0.2s ease,
+    translate 0.2s ease;
+}
+
+.listing-card:hover {
+  translate: 0 -3px;
+  border-color: #141414;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .rise,
+  .listing-card {
+    animation: none;
+  }
+
+  .listing-card:hover {
+    translate: none;
+  }
 }

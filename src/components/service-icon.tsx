@@ -7,6 +7,7 @@ import {
   Workflow,
   type LucideIcon,
 } from "lucide-react";
+import { IconTile } from "@/components/page-frame";
 
 const icons: Record<string, LucideIcon> = {
   "ai-agents": Bot,
@@ -17,7 +18,10 @@ const icons: Record<string, LucideIcon> = {
   "cloud-integration": Cloud,
 };
 
+export function serviceIcon(slug: string) {
+  return icons[slug] ?? LayoutGrid;
+}
+
 export function ServiceIcon({ slug }: { slug: string }) {
-  const Icon = icons[slug] ?? LayoutGrid;
-  return <Icon aria-hidden="true" className="h-5 w-5 text-teal" strokeWidth={1.75} />;
+  return <IconTile icon={serviceIcon(slug)} />;
 }

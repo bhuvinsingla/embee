@@ -1,9 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Activity, ClipboardList, Clock, Factory, ImageOff, type LucideIcon } from "lucide-react";
+import { IconTile, PageIntro, PointList } from "@/components/page-frame";
 import { getProject, projects } from "@/lib/marketing";
 
 type Props = { params: Promise<{ slug: string }> };
+
+const projectIcons: Record<string, LucideIcon> = {
+  "cm-welding": Factory,
+  sunbridge: Activity,
+  "hour-tracker": Clock,
+  "sow-tracker": ClipboardList,
+};
 
 export function generateStaticParams() {
   return projects.map((item) => ({ slug: item.slug }));
@@ -20,35 +29,48 @@ export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
+  const icon = projectIcons[project.slug] ?? Factory;
 
   return (
-    <article className="shell shell-narrow py-12 sm:py-16">
-      <p className="text-sm text-muted">
-        <Link href="/work" className="hover:text-teal">Our Work</Link> / {project.title}
-      </p>
-      <p className="mt-6 text-xs font-semibold tracking-wide text-teal uppercase">{project.category}</p>
-      <h1 className="prose-title mt-2 font-semibold text-navy">{project.title}</h1>
-      <p className="mt-3 text-sm font-medium text-gold">{project.status}</p>
-
-      <h2 className="mt-10 text-xl font-semibold text-navy">Business challenge</h2>
-      <p className="mt-3 text-muted">{project.challenge}</p>
-      <h2 className="mt-8 text-xl font-semibold text-navy">Solution overview</h2>
-      <p className="mt-3 text-muted">{project.solution}</p>
-      <h2 className="mt-8 text-xl font-semibold text-navy">Capabilities</h2>
-      <ul className="mt-3 grid gap-2 text-sm text-muted">
-        {project.capabilities.map((item) => <li key={item}>{item}</li>)}
-      </ul>
-      <h2 className="mt-8 text-xl font-semibold text-navy">Technology</h2>
-      <ul className="mt-3 flex flex-wrap gap-2">
-        {project.technologies.map((item) => (
-          <li key={item} className="rounded-md bg-paper px-2.5 py-1 text-sm">{item}</li>
-        ))}
-      </ul>
-      <p className="mt-8 text-sm text-muted">{project.note}</p>
-      <p className="mt-4 text-sm text-muted">Screenshots will be added when they are approved for publication.</p>
-      <Link href="/contact" className="mt-8 inline-flex rounded-md bg-teal px-5 py-3 text-sm font-semibold text-white hover:bg-[#6b0f0f]">
-        Explore this solution
-      </Link>
-    </article>
+    <>
+      <PageIntro
+        crumbs={[{ href: "/", label: "Home" }, { href: "/work", label: "Our Work" }, { label: project.title }]}
+        title={project.title}
+        lead={project.challenge}
+        icon={icon}
+        label={project.category}
+      />
+      <div className="shell grid items-start gap-8 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-10">
+        <div className="min-w-0">
+          <section className="rounded-md border border-line bg-surface p-5 sm:p-6">
+            <h2 className="text-xl font-semibold text-navy">Solution overview</h2>
+            <p className="mt-3 text-sm text-muted">{project.solution}</p>
+          </section>
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-navy sm:text-2xl">Capabilities</h2>
+            <PointList items={project.capabilities} />
+          </section>
+          <section className="mt-10 flex items-start gap-4 rounded-md border border-dashed border-line bg-surface p-5">
+            <IconTile icon={ImageOff} />
+            <div>
+              <h2 className="font-semibold text-navy">Screenshots</h2>
+              <p className="mt-1 text-sm text-muted">Screenshots will be added when they are approved for publication. {project.note}</p>
+            </div>
+          </section>
+        </div>
+        <aside className="rounded-md border border-line bg-surface p-5 lg:sticky lg:top-24">
+          <p className="text-xs font-semibold tracking-wide text-teal uppercase">{project.status}</p>
+          <h2 className="mt-4 text-sm font-semibold tracking-wide text-muted uppercase">Technology</h2>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {project.technologies.map((item) => (
+              <li key={item} className="rounded-md border border-line bg-paper px-2.5 py-1 text-sm text-navy">{item}</li>
+            ))}
+          </ul>
+          <Link href="/contact" className="mt-6 inline-flex min-h-11 w-full items-center justify-center rounded-md bg-teal px-5 py-3 text-sm font-semibold text-white hover:bg-[#6b0f0f]">
+            Explore this solution
+          </Link>
+        </aside>
+      </div>
+    </>
   );
 }
