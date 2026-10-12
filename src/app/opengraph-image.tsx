@@ -13,13 +13,13 @@ export default function OpenGraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-end",
-          background: "#faf5f1",
+          background: "#141414",
           padding: 72,
         }}
       >
         <div
           style={{
-            color: "#8b1a1a",
+            color: "#A52020",
             fontSize: 24,
             letterSpacing: 4,
           }}
@@ -29,16 +29,16 @@ export default function OpenGraphImage() {
         <div
           style={{
             marginTop: 18,
-            color: "#241310",
-            fontSize: 68,
+            color: "#FFFFFF",
+            fontSize: 60,
             lineHeight: 1.05,
             maxWidth: 900,
           }}
         >
-          Digitizing the work.
+          Transforming business through technology.
         </div>
-        <div style={{ marginTop: 24, color: "#5d4a43", fontSize: 28 }}>
-          Chandigarh
+        <div style={{ marginTop: 24, color: "#FFFFFF", fontSize: 28 }}>
+          AI, Microsoft solutions, and enterprise software
         </div>
       </div>
     ),

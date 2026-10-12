@@ -2,80 +2,171 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { brand, nav } from "@/lib/content";
+import { useEffect, useId, useState, type ReactNode } from "react";
+import { services, verticals } from "@/lib/marketing";
 
 export function SiteHeader() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<"verticals" | "services" | "mobile" | null>(null);
+  const menuId = useId();
+
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(null);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    function onChange() {
+      if (desktop.matches) setOpen(null);
+    }
+    desktop.addEventListener("change", onChange);
+    return () => desktop.removeEventListener("change", onChange);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = open === "mobile" ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/80 bg-paper/90 backdrop-blur-md">
-      <div className="mx-auto flex h-[76px] w-full max-w-[1400px] items-center justify-between gap-6 px-[clamp(1.25rem,0.6rem+3vw,3.5rem)]">
-        <Link href="/" className="shrink-0" onClick={() => setOpen(false)}>
+    <header className="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur-sm">
+      <div className="shell flex min-h-16 items-center justify-between gap-3">
+        <Link href="/" className="flex min-w-0 items-center gap-2 sm:gap-3" onClick={() => setOpen(null)}>
           <Image
             src="/embee-logo.webp"
-            alt="Embee - Growth Catalyst"
-            width={593}
-            height={231}
+            alt="Embee"
+            width={148}
+            height={58}
             priority
-            className="h-11 w-auto sm:h-12"
+            className="h-8 w-auto max-w-[7.5rem] sm:h-9 sm:max-w-none"
           />
+          <span className="hidden text-sm font-semibold tracking-wide text-navy sm:inline">
+            Finsoft
+          </span>
         </Link>
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sm font-medium text-muted transition-colors hover:text-crimson"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="flex items-center gap-3">
-          <a
-            href={brand.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden rounded-full bg-gradient-to-br from-crimson-bright via-crimson to-[#5e0d10] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_28px_-12px_rgba(139,26,26,0.7)] sm:inline-flex"
+
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
+          <Link href="/about" className="rounded-md px-3 py-2 text-sm font-medium whitespace-nowrap text-ink hover:text-teal">
+            About Us
+          </Link>
+          <Menu
+            label="Verticals"
+            expanded={open === "verticals"}
+            onToggle={() => setOpen(open === "verticals" ? null : "verticals")}
+            id={`${menuId}-verticals`}
           >
-            Speak to Embee
-          </a>
+            {verticals.map((item) => (
+              <Link
+                key={item.slug}
+                href={`/verticals#${item.slug}`}
+                className="block rounded-md px-3 py-2 text-sm hover:bg-paper"
+                onClick={() => setOpen(null)}
+              >
+                {item.title}
+              </Link>
+            ))}
+          </Menu>
+          <Menu
+            label="Services"
+            expanded={open === "services"}
+            onToggle={() => setOpen(open === "services" ? null : "services")}
+            id={`${menuId}-services`}
+          >
+            {services.map((item) => (
+              <Link
+                key={item.slug}
+                href={item.href}
+                className="block rounded-md px-3 py-2 text-sm hover:bg-paper"
+                onClick={() => setOpen(null)}
+              >
+                {item.title}
+              </Link>
+            ))}
+          </Menu>
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <Link
+            href="/contact"
+            className="hidden min-h-11 items-center rounded-md bg-teal px-4 py-2 text-sm font-semibold text-white hover:bg-[#6b0f0f] sm:inline-flex"
+          >
+            Contact Us
+          </Link>
           <button
             type="button"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface text-ink lg:hidden"
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            onClick={() => setOpen((value) => !value)}
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-line lg:hidden"
+            aria-expanded={open === "mobile"}
+            aria-controls={`${menuId}-mobile`}
+            onClick={() => setOpen(open === "mobile" ? null : "mobile")}
           >
-            <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
-            <span aria-hidden="true" className="text-lg leading-none">
-              {open ? "×" : "☰"}
-            </span>
+            <span className="sr-only">{open === "mobile" ? "Close menu" : "Open menu"}</span>
+            <span aria-hidden="true">{open === "mobile" ? "×" : "☰"}</span>
           </button>
         </div>
       </div>
-      {open ? (
-        <nav
-          id="mobile-nav"
-          className="border-t border-line bg-paper px-[clamp(1.25rem,0.6rem+3vw,3.5rem)] py-4 lg:hidden"
-          aria-label="Mobile"
-        >
-          <ul className="grid gap-1">
-            {nav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="block rounded-2xl px-3 py-3 font-display text-2xl font-light tracking-tight hover:bg-tint"
-                  onClick={() => setOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              </li>
+
+      {open === "mobile" ? (
+        <nav id={`${menuId}-mobile`} className="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-line bg-surface lg:hidden" aria-label="Mobile">
+          <div className="shell py-4">
+            <Link href="/about" className="block py-2.5 text-sm font-medium" onClick={() => setOpen(null)}>
+              About Us
+            </Link>
+            <p className="mt-3 text-xs font-semibold tracking-wide text-muted uppercase">Verticals</p>
+            {verticals.map((item) => (
+              <Link key={item.slug} href={`/verticals#${item.slug}`} className="block py-2.5 text-sm" onClick={() => setOpen(null)}>
+                {item.title}
+              </Link>
             ))}
-          </ul>
+            <p className="mt-3 text-xs font-semibold tracking-wide text-muted uppercase">Services</p>
+            {services.map((item) => (
+              <Link key={item.slug} href={item.href} className="block py-2.5 text-sm" onClick={() => setOpen(null)}>
+                {item.title}
+              </Link>
+            ))}
+            <Link href="/contact" className="mt-4 inline-flex min-h-11 items-center rounded-md bg-teal px-4 py-2 text-sm font-semibold text-white hover:bg-[#6b0f0f]" onClick={() => setOpen(null)}>
+              Contact Us
+            </Link>
+          </div>
         </nav>
       ) : null}
     </header>
+  );
+}
+
+function Menu({
+  label,
+  expanded,
+  onToggle,
+  id,
+  children,
+}: {
+  label: string;
+  expanded: boolean;
+  onToggle: () => void;
+  id: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        className="rounded-md px-3 py-2 text-sm font-medium whitespace-nowrap text-ink hover:text-teal"
+        aria-expanded={expanded}
+        aria-controls={id}
+        onClick={onToggle}
+      >
+        {label}
+      </button>
+      {expanded ? (
+        <div id={id} className="absolute top-full left-0 z-30 mt-2 max-h-[min(24rem,calc(100dvh-5rem))] w-80 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-md border border-line bg-surface p-2">
+          {children}
+        </div>
+      ) : null}
+    </div>
   );
 }

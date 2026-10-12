@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { projects, services } from "@/lib/marketing";
 import { getSiteUrl } from "@/lib/site-url";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -6,16 +7,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
     "/about",
+    "/services",
+    "/verticals",
     "/work",
-    "/work/cm-welding",
-    "/work/sunbridge",
-    "/work/hour-tracker",
-    "/work/sow-tracker",
-    "/platform",
-    "/hour-tracker",
-    "/sow-tracker",
+    "/insights",
     "/contact",
+    ...services.map((item) => item.href),
+    ...projects.map((item) => `/work/${item.slug}`),
   ];
-
   return routes.map((route) => ({ url: `${siteUrl}${route}` }));
 }
